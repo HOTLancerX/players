@@ -204,7 +204,7 @@ export function PlayerProfileLayout1({ data, permalinkMap = {}, pageData }: Play
                     #{basicInfo.jerseyNumber || null}
                 </div>
 
-                <div className="relative max-w-7xl mx-auto px-4 md:px-6 lg:px-8 pt-8 pb-12">
+                <div className="relative container py-12">
                     {/* Breadcrumbs */}
                     <nav className="flex items-center gap-1.5 text-xs text-slate-500 mb-6 flex-wrap font-medium">
                         <Link href="/" className="hover:text-slate-900 transition-colors">Home</Link>
@@ -358,7 +358,7 @@ export function PlayerProfileLayout1({ data, permalinkMap = {}, pageData }: Play
                 </div>
 
                 {/* Navigation Tab Bar */}
-                <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 border-t border-slate-200">
+                <div className="container border-t border-slate-200">
                     <div className="flex items-center gap-2 md:gap-4 overflow-x-auto py-3 no-scrollbar text-xs md:text-sm font-bold">
                         <button
                             type="button"
@@ -415,7 +415,7 @@ export function PlayerProfileLayout1({ data, permalinkMap = {}, pageData }: Play
             </div>
 
             {/* ─── Main Content Body ─── */}
-            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-10">
+            <div className="container py-10">
                 {/* TAB 1: OVERVIEW & BIO */}
                 {activeTab === "overview" && (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
