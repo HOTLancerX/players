@@ -127,31 +127,31 @@ export function PlayerProfileLayout2({ data, permalinkMap = {}, pageData }: Play
     return (
         <main className="min-h-screen bg-slate-50 text-slate-900">
             {/* Header Strip */}
-            <div className="bg-slate-900 text-white py-12 px-6">
+            <div className="bg-white text-slate-900 border-b border-slate-200 py-12 px-6 shadow-2xs">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
                     <div className="flex items-center gap-6">
-                        <div className="w-28 h-28 rounded-2xl overflow-hidden ring-4 ring-white/10 bg-slate-800">
+                        <div className="w-28 h-28 rounded-2xl overflow-hidden ring-4 ring-slate-100 bg-slate-100 border border-slate-200 shadow-sm">
                             <img src={media.profilePhotoUrl} alt={data.title} className="w-full h-full object-cover" />
                         </div>
                         <div>
                             <div className="flex items-center gap-2 mb-1">
-                                <span className="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-0.5 rounded-full uppercase">
+                                <span className="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-0.5 rounded-full uppercase shadow-2xs">
                                     {basicInfo.currentTeam}
                                 </span>
-                                <span className="text-xs text-slate-400 font-mono font-bold">#{basicInfo.jerseyNumber}</span>
+                                <span className="text-xs text-slate-500 font-mono font-bold">#{basicInfo.jerseyNumber}</span>
                             </div>
-                            <h1 className="text-3xl sm:text-4xl font-black">{basicInfo.fullName || data.title}</h1>
-                            <p className="text-sm text-slate-400 mt-1">{basicInfo.position} • {basicInfo.nationality}</p>
+                            <h1 className="text-3xl sm:text-4xl font-black text-slate-900">{basicInfo.fullName || data.title}</h1>
+                            <p className="text-sm text-slate-500 mt-1">{basicInfo.position} • {basicInfo.nationality}</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
-                        <div className="bg-slate-800/80 p-4 rounded-xl text-center min-w-24">
-                            <div className="text-2xl font-black text-emerald-400">{!isCricket ? statsData.football.goals : statsData.cricket.runsScored}</div>
+                        <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center min-w-24 shadow-2xs">
+                            <div className="text-2xl font-black text-slate-900 font-mono">{!isCricket ? statsData.football.goals : statsData.cricket.runsScored}</div>
                             <div className="text-[11px] font-bold text-slate-400 uppercase">{!isCricket ? "Goals" : "Runs"}</div>
                         </div>
-                        <div className="bg-slate-800/80 p-4 rounded-xl text-center min-w-24">
-                            <div className="text-2xl font-black text-white">{!isCricket ? statsData.football.matchesPlayed : statsData.cricket.matchesPlayed}</div>
+                        <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center min-w-24 shadow-2xs">
+                            <div className="text-2xl font-black text-slate-900 font-mono">{!isCricket ? statsData.football.matchesPlayed : statsData.cricket.matchesPlayed}</div>
                             <div className="text-[11px] font-bold text-slate-400 uppercase">Matches</div>
                         </div>
                     </div>

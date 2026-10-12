@@ -18,6 +18,7 @@ import PlayerBox2 from "./box/PlayerBox2";
 // Builder Elements
 import playerSpotlightHeroElement from "./elements/PlayerSpotlightHero";
 import playerCardGridElement from "./elements/PlayerCardGrid";
+import playerElement from "./elements/Player";
 
 // ─── 1. Plugin Metadata ───────────────────────────────────────────────────────
 export const PLUGINS: PluginMeta = {
@@ -54,27 +55,11 @@ export function register(): void {
         [
             {
                 key: "player-category",
-                label: "Sports & Categories",
+                label: "Categories",
                 postType: "player",
                 icon: "solar:folder-with-files-bold",
                 color: "from-emerald-500 to-teal-600",
                 position: 28,
-            },
-            {
-                key: "player-team",
-                label: "Teams & Squads",
-                postType: "player",
-                icon: "solar:shield-bold",
-                color: "from-cyan-500 to-blue-600",
-                position: 29,
-            },
-            {
-                key: "player-position",
-                label: "Positions & Roles",
-                postType: "player",
-                icon: "solar:user-check-bold",
-                color: "from-purple-500 to-indigo-600",
-                position: 30,
             },
         ],
         PLUGINS.nx
@@ -102,27 +87,11 @@ export function register(): void {
             },
             {
                 key: "player-category",
-                label: "Sports Categories",
+                label: "Categories",
                 icon: "solar:folder-with-files-bold",
                 slug: "category/player-category",
                 parent: "players",
                 position: 3,
-            },
-            {
-                key: "player-team",
-                label: "Teams & Clubs",
-                icon: "solar:shield-bold",
-                slug: "category/player-team",
-                parent: "players",
-                position: 4,
-            },
-            {
-                key: "player-position",
-                label: "Positions & Roles",
-                icon: "solar:user-check-bold",
-                slug: "category/player-position",
-                parent: "players",
-                position: 5,
             },
         ],
         PLUGINS.nx
@@ -176,30 +145,12 @@ export function register(): void {
             // Right Column
             {
                 key: "category",
-                label: "Sports Category",
+                label: "Category",
                 type: "player",
                 style: "right",
                 position: 5,
                 component: CategoryHierarchicalSelect,
                 hierarchicalCatType: "player-category",
-            },
-            {
-                key: "team",
-                label: "Club / Team",
-                type: "player",
-                style: "right",
-                position: 10,
-                component: CategoryHierarchicalSelect,
-                hierarchicalCatType: "player-team",
-            },
-            {
-                key: "position_cat",
-                label: "Position Category",
-                type: "player",
-                style: "right",
-                position: 15,
-                component: CategoryHierarchicalSelect,
-                hierarchicalCatType: "player-position",
             },
         ],
         PLUGINS.nx
@@ -276,6 +227,7 @@ export function register(): void {
     // ─── 6. Builder Elements ─────────────────────────────────────────────────
     addBuilderElement(playerSpotlightHeroElement as any, PLUGINS.nx);
     addBuilderElement(playerCardGridElement as any, PLUGINS.nx);
+    addBuilderElement(playerElement as any, PLUGINS.nx);
 }
 
 export default register;

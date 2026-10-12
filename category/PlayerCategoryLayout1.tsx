@@ -9,11 +9,14 @@ export interface PlayerCategoryLayoutProps {
     cat?: any;
     posts?: any[];
     items?: any[];
+    pageData?: any;
+    settings?: any;
+    permalinkMap?: any;
 }
 
 export default function PlayerCategoryLayout1(props: PlayerCategoryLayoutProps) {
     const cat = props.cat || props.data || {};
-    const players = props.posts || props.items || [];
+    const players = props.posts || props.items || props.pageData?.posts || [];
 
     const [filterRole, setFilterRole] = useState<string>("all");
     const [search, setSearch] = useState<string>("");
@@ -28,13 +31,17 @@ export default function PlayerCategoryLayout1(props: PlayerCategoryLayoutProps) 
             info = item.info || {};
             const basic = typeof info.player_basic === "string" ? JSON.parse(info.player_basic) : info.player_basic || {};
             const pos = (basic.position || "").toLowerCase();
-            if (filterRole === "forward" && (pos.includes("forward") || pos.includes("striker") || pos.includes("winger"))) return true;
-            if (filterRole === "midfield" && pos.includes("midfield")) return true;
-            if (filterRole === "defender" && (pos.includes("defend") || pos.includes("back"))) return true;
-            if (filterRole === "goalkeeper" && (pos.includes("goal") || pos.includes("keeper"))) return true;
-            if (filterRole === "batsman" && (pos.includes("bat") || pos.includes("opener"))) return true;
-            if (filterRole === "bowler" && (pos.includes("bowl") || pos.includes("spinner") || pos.includes("pacer"))) return true;
-            if (filterRole === "allrounder" && pos.includes("all-round")) return true;
+            const catTitle = (cat.title || "").toLowerCase();
+            const catSlug = (cat.slug || "").toLowerCase();
+            const matchesRole = (r: string) => pos.includes(r) || catTitle.includes(r) || catSlug.includes(r);
+
+            if (filterRole === "forward" && (matchesRole("forward") || matchesRole("striker") || matchesRole("winger"))) return true;
+            if (filterRole === "midfield" && matchesRole("midfield")) return true;
+            if (filterRole === "defender" && (matchesRole("defend") || matchesRole("back"))) return true;
+            if (filterRole === "goalkeeper" && (matchesRole("goal") || matchesRole("keeper"))) return true;
+            if (filterRole === "batsman" && (matchesRole("bat") || matchesRole("opener"))) return true;
+            if (filterRole === "bowler" && (matchesRole("bowl") || matchesRole("spinner") || matchesRole("pacer"))) return true;
+            if (filterRole === "allrounder" && matchesRole("all-round")) return true;
         } catch {
             return false;
         }
@@ -42,24 +49,24 @@ export default function PlayerCategoryLayout1(props: PlayerCategoryLayoutProps) 
     });
 
     return (
-        <div className="bg-slate-950 text-slate-100 min-h-screen py-12">
+        <div className="bg-slate-50 text-slate-900 min-h-screen py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
                 {/* Header Banner */}
-                <div className="bg-slate-900 rounded-3xl p-8 sm:p-10 border border-slate-800 space-y-4 relative overflow-hidden">
+                <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm space-y-4 relative overflow-hidden">
                     <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-linear-to-l from-emerald-500/10 to-transparent pointer-events-none" />
-                    <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-emerald-400">
+                    <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-emerald-600">
                         <Icon icon="solar:users-group-rounded-bold" className="w-4 h-4" />
                         <span>Athletes & Player Roster</span>
                     </div>
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white uppercase tracking-tight">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tight">
                         {cat.title || "Squad & Players"}
                     </h1>
                     {cat.description && (
-                        <p className="text-slate-400 text-sm max-w-2xl leading-relaxed">{cat.description}</p>
+                        <p className="text-slate-600 text-sm max-w-2xl leading-relaxed">{cat.description}</p>
                     )}
 
                     {/* Filter & Search Bar */}
-                    <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-slate-800">
+                    <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-slate-100">
                         <div className="flex flex-wrap items-center gap-2">
                             {[
                                 { id: "all", label: "All Players" },
@@ -75,10 +82,10 @@ export default function PlayerCategoryLayout1(props: PlayerCategoryLayoutProps) 
                                     key={f.id}
                                     type="button"
                                     onClick={() => setFilterRole(f.id)}
-                                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
+                                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition border ${
                                         filterRole === f.id
-                                            ? "bg-emerald-500 text-slate-950 shadow-md font-extrabold"
-                                            : "bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700"
+                                            ? "bg-emerald-500 text-slate-950 border-emerald-500 shadow-sm font-extrabold"
+                                            : "bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border-slate-200 shadow-2xs"
                                     }`}
                                 >
                                     {f.label}
@@ -93,7 +100,7 @@ export default function PlayerCategoryLayout1(props: PlayerCategoryLayoutProps) 
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 placeholder="Search by player name..."
-                                className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 outline-none focus:border-emerald-500"
+                                className="w-full pl-10 pr-4 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-emerald-500 shadow-2xs"
                             />
                         </div>
                     </div>
@@ -101,8 +108,8 @@ export default function PlayerCategoryLayout1(props: PlayerCategoryLayoutProps) 
 
                 {/* Grid */}
                 {filtered.length === 0 ? (
-                    <div className="bg-slate-900 rounded-3xl p-12 text-center text-slate-500 border border-slate-800">
-                        <Icon icon="solar:user-block-bold" className="w-12 h-12 mx-auto mb-2 text-slate-600" />
+                    <div className="bg-white rounded-3xl p-12 text-center text-slate-500 border border-slate-200 shadow-sm">
+                        <Icon icon="solar:user-block-bold" className="w-12 h-12 mx-auto mb-2 text-slate-400" />
                         <p className="text-sm font-semibold">No athletes found matching the active criteria.</p>
                     </div>
                 ) : (

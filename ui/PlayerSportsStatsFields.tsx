@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
 import type { FieldProps } from "@/hook";
 
@@ -124,12 +124,14 @@ export function PlayerSportsStatsFields({ name, label, value, onChange }: FieldP
         }
     }, [value]);
 
+    const dataRef = useRef(data);
+    dataRef.current = data;
+
     const updateRoot = (updater: (prev: PlayerSportsStatsData) => PlayerSportsStatsData) => {
-        setData((prev) => {
-            const next = updater(prev);
-            onChange(JSON.stringify(next));
-            return next;
-        });
+        const next = updater(dataRef.current);
+        dataRef.current = next;
+        setData(next);
+        onChange(JSON.stringify(next));
     };
 
     const updateFootball = (key: keyof FootballStats, val: any) => {

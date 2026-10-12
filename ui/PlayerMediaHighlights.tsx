@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
 import type { FieldProps } from "@/hook";
 
@@ -70,12 +70,14 @@ export function PlayerMediaHighlights({ name, label, value, onChange }: FieldPro
         }
     }, [value]);
 
+    const dataRef = useRef(data);
+    dataRef.current = data;
+
     const updateRoot = (updater: (prev: PlayerMediaData) => PlayerMediaData) => {
-        setData((prev) => {
-            const next = updater(prev);
-            onChange(JSON.stringify(next));
-            return next;
-        });
+        const next = updater(dataRef.current);
+        dataRef.current = next;
+        setData(next);
+        onChange(JSON.stringify(next));
     };
 
     const updateField = (key: keyof PlayerMediaData, val: any) => {

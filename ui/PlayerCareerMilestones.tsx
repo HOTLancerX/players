@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
 import type { FieldProps } from "@/hook";
 
@@ -62,12 +62,14 @@ export function PlayerCareerMilestones({ name, label, value, onChange }: FieldPr
         }
     }, [value]);
 
+    const dataRef = useRef(data);
+    dataRef.current = data;
+
     const updateRoot = (updater: (prev: PlayerMilestonesData) => PlayerMilestonesData) => {
-        setData((prev) => {
-            const next = updater(prev);
-            onChange(JSON.stringify(next));
-            return next;
-        });
+        const next = updater(dataRef.current);
+        dataRef.current = next;
+        setData(next);
+        onChange(JSON.stringify(next));
     };
 
     // Journey
